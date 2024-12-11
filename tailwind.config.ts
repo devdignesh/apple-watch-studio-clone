@@ -12,6 +12,13 @@ export default {
         background: "var(--background)",
         foreground: "var(--foreground)",
       },
+      fontFamily: {
+        proDisplayRegular: ["ProDisplayRegular", "sans-serif"],
+        proTextSemibold: ["ProTextSemibold", "sans-serif"],
+        proTextRegular: ["ProTextRegular", "sans-serif"],
+        proDisplaySemibold: ["ProDisplaySemibold", "sans-serif"],
+
+      },
     },
   },
   plugins: [],
