@@ -5,7 +5,7 @@ const bands = [
       price: 49,
       defaultImage: "/images/bands/solo_black.png",
       sideViewImage: "/images/bands/side/solo_black_side.png",
-      brandKey: "default", // Matches default case image
+      brandKey: "default",  
     },
     {
       id: "nike_white",
@@ -13,7 +13,7 @@ const bands = [
       price: 59,
       defaultImage: "/images/bands/nike_white.png",
       sideViewImage: "/images/bands/side/nike_white_side.png",
-      brandKey: "nike", // Matches case-specific Nike variation
+      brandKey: "nike",  
     },
   ];
   export default bands;
