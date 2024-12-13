@@ -5,8 +5,7 @@ interface Case {
   id: string;
   name: string;
   price: number;
-  defaultImage: string;
-  bandVariations: Record<string, string>; // Maps brandKey to case images
+  image: string;
 }
 
 interface Band {
@@ -21,6 +20,7 @@ interface WatchState {
   collection: string;
   selectedCase: Case;
   selectedBand: Band;
+  selectedMainCase: { id: string; name: string };
   size: { id: string; name: string; price: number };
   totalPrice: number;
   currentCaseImage: string;
@@ -34,12 +34,9 @@ interface WatchState {
 
 const initialCase: Case = {
   id: "aluminum_black",
-  name: "Jet Black Aluminum",
-  price: 329,
-  defaultImage: "/images/cases/aluminum_black.png",
-  bandVariations: {
-    nike: "/images/cases/aluminum_black_nike.png",
-  },
+  name: "Jet Black Aluminum Case",
+  price: 359,
+  image: "/images/cases/aluminum_black.png",
 };
 
 const initialBand: Band = {
@@ -56,9 +53,13 @@ const initialState: WatchState = {
   collection: "APPLE WATCH SERIES 10",
   selectedCase: initialCase,
   selectedBand: initialBand,
+  selectedMainCase: {
+    id: "aluminum",
+    name: "Aluminum",
+  },
   size: initialSize,
   totalPrice: initialCase.price + initialBand.price + initialSize.price,
-  currentCaseImage: initialCase.defaultImage,
+  currentCaseImage: initialCase.image,
   currentBandImage: initialBand.defaultImage,
   currentSideViewImage: `/images/side/${initialCase.id}_${initialBand.id}_side.jpg`,
   options: watchCollections,
@@ -68,16 +69,27 @@ const watchSlice = createSlice({
   name: "watch",
   initialState,
   reducers: {
-    setCase(state, action: PayloadAction<Case>) {
-      state.selectedCase = action.payload;
+    setCase(
+      state,
+      action: PayloadAction<{
+        subCase: Case;
+        mainCase: { id: string; name: string };
+      }>
+    ) {
+      state.selectedCase = action.payload.subCase;
+      state.selectedMainCase = action.payload.mainCase;
       state.totalPrice = state.selectedCase.price + state.selectedBand.price;
 
       // Dynamically update images
       const brandKey = state.selectedBand.brandKey;
-      state.currentCaseImage =
-        state.selectedCase.bandVariations[brandKey] ||
-        state.selectedCase.defaultImage;
       state.currentSideViewImage = `/images/cases/side/${state.selectedCase.id}_${brandKey}_${state.selectedBand.id}_side.png`;
+    },
+
+    setSelectedMainCase(
+      state,
+      action: PayloadAction<{ id: string; name: string }>
+    ) {
+      state.selectedMainCase = action.payload;
     },
 
     setBand(state, action: PayloadAction<Band>) {
@@ -86,14 +98,15 @@ const watchSlice = createSlice({
 
       // Dynamically update images
       const brandKey = state.selectedBand.brandKey;
-      state.currentCaseImage =
-        state.selectedCase.bandVariations[brandKey] ||
-        state.selectedCase.defaultImage;
       state.currentSideViewImage = `/images/cases/side/${state.selectedCase.id}_${brandKey}_${state.selectedBand.id}_side.png`;
     },
-    setSize(state, action: PayloadAction<{ id: string; name: string; price: number }>) {
+    setSize(
+      state,
+      action: PayloadAction<{ id: string; name: string; price: number }>
+    ) {
       state.size = action.payload;
-      state.totalPrice = state.selectedCase.price + state.selectedBand.price + state.size.price;
+      state.totalPrice =
+        state.selectedCase.price + state.selectedBand.price + state.size.price;
     },
     setCollection: (state, action) => {
       state.collection = action.payload;
@@ -102,6 +115,11 @@ const watchSlice = createSlice({
   },
 });
 
-export const { setCase, setBand, setSize } = watchSlice.actions;
+export const {
+  setCase,
+  setBand,
+  setSize,
+  setSelectedMainCase,
+} = watchSlice.actions;
 
 export default watchSlice.reducer;

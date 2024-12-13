@@ -12,6 +12,7 @@ interface GreetingProps {
 const Greeting: React.FC<GreetingProps> = ({ setIsGreeting, isGreeting }) => {
   const caseImage = useSelector((state: any) => state.watch.currentCaseImage);
   const bandImage = useSelector((state: any) => state.watch.currentBandImage);
+  
   const sideViewImage = useSelector(
     (state: any) => state.watch.currentSideViewImage
   );
