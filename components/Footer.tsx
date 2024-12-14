@@ -1,15 +1,26 @@
 import { WatchSizeIcon } from "@/assets/WatchSizeIcon";
 import React, { useState } from "react";
-import { setSelectedMainCase, setSize } from "@/store/slices/watchSlice";
+import { setSelectedMainBand, setSelectedMainCase, setSize } from "@/store/slices/watchSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleButton } from "@/store/slices/buttonSlice";
 import { motion } from "framer-motion";
 import cases from "@/data/cases";
+import bands from "@/data/bands";
+import { WatchBandIcon } from "@/assets/WatchBandIcon";
+import { WatchCaseIcon } from "@/assets/WatchCaseIcon";
 
 const Footer = () => {
   const dispatch = useDispatch();
-  const { collection, size, options, selectedCase, selectedBand, totalPrice, selectedMainCase } =
-    useSelector((state: any) => state.watch);
+  const {
+    collection,
+    size,
+    options,
+    selectedCase,
+    selectedBand,
+    totalPrice,
+    selectedMainCase,
+    selectedMainBand
+  } = useSelector((state: any) => state.watch);
   const openButton = useSelector((state: any) => state.button.openButton);
 
   return (
@@ -54,7 +65,7 @@ const Footer = () => {
 
         <div className="bg-[#e8e8ed] space-x-2 rounded-full  items-center flex  text-[#1d1d1f] border-none  mx-[6px] px-[18px] font-proTextRegular font-[17px] tracking-[-.022em] ">
           <div className="inline-block">
-            <WatchSizeIcon />
+            <WatchCaseIcon />
           </div>
           {openButton === "Case" ? (
             cases.map((mainCase: any) => (
@@ -68,7 +79,7 @@ const Footer = () => {
                     })
                   )
                 }
-                className={`my-[5px] min-h-[20px] text-[17px] align-middle text-[#1d1d1f] py-[5px] ${
+                className={`my-[5px] min-h-[20px] px-1 text-[17px] align-middle text-[#1d1d1f] py-[5px] ${
                   selectedMainCase.id === mainCase.id
                     ? "font-proTextSemibold"
                     : "font-proTextRegular"
@@ -89,10 +100,29 @@ const Footer = () => {
 
         <div className="bg-[#e8e8ed] space-x-2 rounded-full  items-center flex  text-[#1d1d1f] border-none  mx-[6px] px-[18px] font-proTextRegular font-[17px] tracking-[-.022em] ">
           <div className="inline-block">
-            <WatchSizeIcon />
+            <WatchBandIcon />
           </div>
           {openButton === "Band" ? (
-            <></>
+            bands.map((mainBand: any) => (
+              <button
+                key={mainBand.id}
+                onClick={() =>
+                  dispatch(
+                    setSelectedMainBand({
+                      id: mainBand.id,
+                      name: mainBand.name,
+                    })
+                  )
+                }
+                className={`my-[5px] min-h-[20px] px-1 text-[17px] align-middle text-[#1d1d1f] py-[5px] ${
+                  selectedMainBand.id === mainBand.id
+                    ? "font-proTextSemibold"
+                    : "font-proTextRegular"
+                }`}
+              >
+                {mainBand.name}
+              </button>
+            ))
           ) : (
             <button
               onClick={() => dispatch(toggleButton("Band"))}
