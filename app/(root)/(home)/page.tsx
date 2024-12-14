@@ -1,6 +1,6 @@
 "use client";
 import Header from "@/components/Header";
-import Greeting from "@/components/Greeting";
+import Studio from "@/components/Studio";
 import Image from "next/image";
 import React, { useState } from "react";
 
@@ -10,7 +10,7 @@ const page = () => {
   return (
     <>
       <Header isGreeting={isGreeting}/>
-      <Greeting setIsGreeting={setIsGreeting} isGreeting={isGreeting} />
+      <Studio setIsGreeting={setIsGreeting} isGreeting={isGreeting} />
     </>
   );
 };
