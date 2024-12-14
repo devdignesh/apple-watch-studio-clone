@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
 import Footer from "./Footer";
 import CaseSlider from "./CaseSlider";
+import BandSlider from "./BandSlider";
 
 interface GreetingProps {
   setIsGreeting: React.Dispatch<React.SetStateAction<boolean>>;
@@ -25,8 +26,6 @@ const Greeting: React.FC<GreetingProps> = ({ setIsGreeting, isGreeting }) => {
   const openButton = useSelector((state: any) => state.button.openButton);
 
   const dispatch = useDispatch();
-
-  
 
   return (
     <>
@@ -84,6 +83,7 @@ const Greeting: React.FC<GreetingProps> = ({ setIsGreeting, isGreeting }) => {
             className="relative"
           >
             {openButton === "Case" && <CaseSlider />}
+            {openButton === "Band" && <BandSlider/>}
 
             {openButton === null && (
               <div
@@ -137,9 +137,9 @@ const Greeting: React.FC<GreetingProps> = ({ setIsGreeting, isGreeting }) => {
                     />
                   </motion.div>
                 )}
-
               </div>
             )}
+
           </motion.div>
         </div>
       </motion.div>

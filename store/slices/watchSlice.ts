@@ -1,3 +1,4 @@
+import bands from "@/data/bands";
 import cases from "@/data/cases";
 import { watchCollections } from "@/data/watchCollections";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
@@ -13,9 +14,8 @@ interface Band {
   id: string;
   name: string;
   price: number;
-  defaultImage: string;
-  brandKey: string;
-}
+  image: string;
+ }
 
 interface WatchState {
   collection: string;
@@ -45,9 +45,8 @@ const initialBand: Band = {
   id: "solo_black",
   name: "Black Solo Loop",
   price: 49,
-  defaultImage: "/images/bands/solo_black.jpg",
-  brandKey: "default",
-};
+  image: "/images/bands/solo_black.jpg",
+ };
 
 const initialSize = { id: "46mm", name: "46mm", price: 50 };
 
@@ -63,7 +62,7 @@ const initialState: WatchState = {
   size: initialSize,
   totalPrice: initialCase.price + initialBand.price + initialSize.price,
   currentCaseImage: initialCase.image,
-  currentBandImage: initialBand.defaultImage,
+  currentBandImage: initialBand.image,
   currentSideViewImage: `/images/side/${initialCase.id}_${initialBand.id}_side.jpg`,
   options: watchCollections,
 };
@@ -124,6 +123,7 @@ const watchSlice = createSlice({
     ) {
       state.selectedBand = action.payload.subBand;
       state.selectedMainBand = action.payload.mainBand;
+      state.currentBandImage = action.payload.subBand.image
 
       // Dynamically update side view image
       state.currentSideViewImage = `/images/cases/side/${state.selectedCase.id}_${state.selectedBand.id}_side.png`;
@@ -137,7 +137,19 @@ const watchSlice = createSlice({
       state,
       action: PayloadAction<{ id: string; name: string }>
     ) {
+      const mainBand = bands.find((b) => b.id === action.payload.id);
+      if (!mainBand) return;
+
+      const firstBand = mainBand.variations[0];
+      if (!firstBand) return;
+
       state.selectedMainBand = action.payload;
+      state.selectedBand = firstBand;
+      state.currentBandImage = firstBand.image;
+
+      state.totalPrice =
+       state.selectedCase.price + firstBand.price + state.size.price;
+ 
     },
 
     setSize(
