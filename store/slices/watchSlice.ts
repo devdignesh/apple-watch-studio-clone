@@ -1,3 +1,4 @@
+import cases from "@/data/cases";
 import { watchCollections } from "@/data/watchCollections";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
@@ -80,18 +81,38 @@ const watchSlice = createSlice({
     ) {
       state.selectedCase = action.payload.subCase;
       state.selectedMainCase = action.payload.mainCase;
+      state.currentCaseImage = action.payload.subCase.image;
+
+      // Dynamically update side view image
+      state.currentSideViewImage = `/images/cases/side/${state.selectedCase.id}_${state.selectedBand.id}_side.png`;
+
+      // Recalculate total price
       state.totalPrice =
         state.selectedCase.price + state.selectedBand.price + state.size.price;
-
-      // Dynamically update images
-      state.currentSideViewImage = `/images/cases/side/${state.selectedCase.id}_${state.selectedBand.id}_side.png`;
     },
 
     setSelectedMainCase(
       state,
       action: PayloadAction<{ id: string; name: string }>
     ) {
+      // Find the main case
+      const mainCase = cases.find((c) => c.id === action.payload.id);
+      if (!mainCase) return;
+
+      // Select the first variation of the main case
+      const firstCase = mainCase.variations[0];
+      if (!firstCase) return;
+
       state.selectedMainCase = action.payload;
+      state.selectedCase = firstCase;
+      state.currentCaseImage = firstCase.image;
+
+      // Dynamically update side view image
+      state.currentSideViewImage = `/images/cases/side/${firstCase.id}_${state.selectedBand.id}_side.png`;
+
+      // Recalculate total price
+      state.totalPrice =
+        firstCase.price + state.selectedBand.price + state.size.price;
     },
 
     setBand(
@@ -103,11 +124,13 @@ const watchSlice = createSlice({
     ) {
       state.selectedBand = action.payload.subBand;
       state.selectedMainBand = action.payload.mainBand;
+
+      // Dynamically update side view image
+      state.currentSideViewImage = `/images/cases/side/${state.selectedCase.id}_${state.selectedBand.id}_side.png`;
+
+      // Recalculate total price
       state.totalPrice =
         state.selectedCase.price + state.selectedBand.price + state.size.price;
-
-      // Dynamically update images
-      state.currentSideViewImage = `/images/cases/side/${state.selectedCase.id}_${state.selectedBand.id}_side.png`;
     },
 
     setSelectedMainBand(
@@ -125,14 +148,19 @@ const watchSlice = createSlice({
       state.totalPrice =
         state.selectedCase.price + state.selectedBand.price + state.size.price;
     },
+
     setCollection: (state, action) => {
       state.collection = action.payload;
-      // state.size = state.options[action.payload][1];
     },
   },
 });
 
-export const { setCase, setBand, setSize, setSelectedMainCase, setSelectedMainBand } =
-  watchSlice.actions;
+export const {
+  setCase,
+  setBand,
+  setSize,
+  setSelectedMainCase,
+  setSelectedMainBand,
+} = watchSlice.actions;
 
 export default watchSlice.reducer;

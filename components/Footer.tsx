@@ -34,8 +34,7 @@ const Footer = () => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.1, ease: "easeInOut" }}
-            className="space-x-3 "
-          >
+            className="space-x-3 ">
             {openButton === "Size" ? (
               options
                 .find((opt: any) => opt.name === collection)

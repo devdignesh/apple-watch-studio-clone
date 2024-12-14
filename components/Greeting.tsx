@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
 import Footer from "./Footer";
+import CaseSlider from "./CaseSlider";
 
 interface GreetingProps {
   setIsGreeting: React.Dispatch<React.SetStateAction<boolean>>;
@@ -12,20 +13,20 @@ interface GreetingProps {
 const Greeting: React.FC<GreetingProps> = ({ setIsGreeting, isGreeting }) => {
   const caseImage = useSelector((state: any) => state.watch.currentCaseImage);
   const bandImage = useSelector((state: any) => state.watch.currentBandImage);
-  
+
   const sideViewImage = useSelector(
     (state: any) => state.watch.currentSideViewImage
   );
 
-  const { collection, size, options,selectedCase, selectedBand, totalPrice } = useSelector(
-    (state: any) => state.watch
-  );
+  const { collection, size, options, selectedCase, selectedBand, totalPrice } =
+    useSelector((state: any) => state.watch);
 
   const [sideview, setSideView] = useState(false);
+  const openButton = useSelector((state: any) => state.button.openButton);
 
   const dispatch = useDispatch();
 
-  console.log(options);
+  
 
   return (
     <>
@@ -82,11 +83,42 @@ const Greeting: React.FC<GreetingProps> = ({ setIsGreeting, isGreeting }) => {
             }}
             className="relative"
           >
-            <div
-              className={`h-[53vh] max-h-[29.88rem] min-h-[18.47rem] m-auto max-w-[500px] w-[52vh] relative `}
-            >
-              {!sideview && (
-                <>
+            {openButton === "Case" && <CaseSlider />}
+
+            {openButton === null && (
+              <div
+                className={`h-[53vh] max-h-[29.88rem] min-h-[18.47rem] m-auto max-w-[500px] w-[52vh] relative`}
+              >
+                {!sideview && (
+                  <>
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      whileInView={{ opacity: 1 }}
+                      viewport={{ once: true, amount: 0.4 }}
+                      transition={{
+                        duration: 0.7,
+                        ease: "easeInOut",
+                      }}
+                    >
+                      <Image
+                        src={bandImage}
+                        height={1000}
+                        width={1000}
+                        alt="watch band preview"
+                        className="object-cover absolute w-[52vh] max-w-[500px] "
+                      />
+                      <Image
+                        src={caseImage}
+                        height={1000}
+                        width={1000}
+                        alt="watch case preview"
+                        className="object-cover  absolute w-[52vh] max-w-[500px]  "
+                      />
+                    </motion.div>
+                  </>
+                )}
+
+                {sideview && (
                   <motion.div
                     initial={{ opacity: 0 }}
                     whileInView={{ opacity: 1 }}
@@ -97,43 +129,17 @@ const Greeting: React.FC<GreetingProps> = ({ setIsGreeting, isGreeting }) => {
                     }}
                   >
                     <Image
-                      src={bandImage}
+                      src={sideViewImage}
                       height={1000}
                       width={1000}
-                      alt="watch band preview"
-                      className="object-cover absolute w-[52vh] max-w-[500px] "
-                    />
-                    <Image
-                      src={caseImage}
-                      height={1000}
-                      width={1000}
-                      alt="watch case preview"
+                      alt="watch side preview"
                       className="object-cover  absolute w-[52vh] max-w-[500px]  "
                     />
                   </motion.div>
-                </>
-              )}
+                )}
 
-              {sideview && (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  viewport={{ once: true, amount: 0.4 }}
-                  transition={{
-                    duration: 0.7,
-                    ease: "easeInOut",
-                  }}
-                >
-                  <Image
-                    src={sideViewImage}
-                    height={1000}
-                    width={1000}
-                    alt="watch side preview"
-                    className="object-cover  absolute w-[52vh] max-w-[500px]  "
-                  />
-                </motion.div>
-              )}
-            </div>
+              </div>
+            )}
           </motion.div>
         </div>
       </motion.div>
@@ -145,7 +151,8 @@ const Greeting: React.FC<GreetingProps> = ({ setIsGreeting, isGreeting }) => {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true, amount: 0.4 }}
             transition={{ duration: 0.5, delay: 1.5, ease: "easeInOut" }}
-            className="m-auto flex flex-col pt-[8vh] text-center w-[60%] font-proTextRegular text-sm   leading-[1.42]">
+            className="m-auto flex flex-col pt-[6vh] text-center w-[60%] font-proTextRegular text-sm   leading-[1.42]"
+          >
             <button
               onClick={() => setSideView(!sideview)}
               className="mb-3 text-[#06c] underline text-xs"
@@ -163,8 +170,8 @@ const Greeting: React.FC<GreetingProps> = ({ setIsGreeting, isGreeting }) => {
                 {`From $${totalPrice}`}
               </span>
             </div>
-            
-            <Footer/>
+
+            <Footer />
           </motion.div>
         </>
       )}

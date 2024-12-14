@@ -85,3 +85,19 @@ body {
   animation-timeline: auto;
   animation-range-start: normal;
 }
+
+.p-in-start {
+  padding-inline-start: calc(50vw - 156px);
+}
+
+.m-in-start{
+  margin-inline-start:calc(-26vh + 156px);
+}
+
+.data-core-scroller-item:last-child{
+  padding-inline-end: calc(50vw - 156px);
+
+}
+.combinedimage{
+  transform: translateX(calc(1*-50%));
+}
