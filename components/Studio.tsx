@@ -8,13 +8,16 @@ import BandSlider from "./Sliders/BandSlider";
 import SizeSlider from "./Sliders/SizeSlider";
 import WatchInfo from "./WatchInfo";
 import Greetings from "./Greetings";
+import CollectionModel from "./models/CollectionModel";
 
 interface GreetingProps {
   setIsGreeting: React.Dispatch<React.SetStateAction<boolean>>;
   isGreeting: boolean;
+  isCollectionModel : boolean;
+  setIsCollectionModel:  React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const Studio: React.FC<GreetingProps> = ({ setIsGreeting, isGreeting }) => {
+const Studio: React.FC<GreetingProps> = ({ setIsGreeting, isGreeting,isCollectionModel,setIsCollectionModel }) => {
   const caseImage = useSelector((state: any) => state.watch.currentCaseImage);
   const bandImage = useSelector((state: any) => state.watch.currentBandImage);
 
@@ -36,6 +39,7 @@ const Studio: React.FC<GreetingProps> = ({ setIsGreeting, isGreeting }) => {
       >
         {isGreeting && <Greetings setIsGreeting={setIsGreeting} />}
 
+        {isCollectionModel && <CollectionModel setIsCollectionModel={setIsCollectionModel}/>}
         <div className="text-center">
           <motion.div
             initial={{

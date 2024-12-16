@@ -1,3 +1,4 @@
+import { watchCollections } from "@/data/watchCollections";
 import { setSize } from "@/store/slices/watchSlice";
 import { getImageSize } from "@/utils/imageSizes";
 import { AnimatePresence, motion } from "motion/react";
@@ -8,7 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 const SizeSlider = () => {
   const dispatch = useDispatch();
 
-  const { currentBandImage, currentCaseImage, options, collection, size } =
+  const { currentBandImage, currentCaseImage, collection, size } =
     useSelector((state: any) => state.watch);
 
   const sliderRef = useRef<HTMLDivElement>(null);
@@ -33,8 +34,8 @@ const SizeSlider = () => {
 
   useEffect(() => {
     // On mount, center the selected band in the slider
-    const selected = options
-      .find((opt: any) => opt.name === collection)
+    const selected = watchCollections
+      .find((opt: any) => opt.id === collection)
       ?.sizes.find((s: any) => s.id === size.id);
 
     console.log("selected:", selected);
@@ -49,7 +50,7 @@ const SizeSlider = () => {
         });
       }
     }
-  }, [size, options]);
+  }, [size, watchCollections]);
 
   return (
     <AnimatePresence>
@@ -72,33 +73,34 @@ const SizeSlider = () => {
               className="max-h-[592px] h-full p-in-start overflow-x-scroll"
               style={{ overflowX: "scroll" }}
             >
-              {options
-                .find((opt: any) => opt.name === collection)
+              {watchCollections
+                .find((opt: any) => opt.id === collection)
                 ?.sizes.map((option: any) => {
                   const { width, height } = getImageSize(option.name);
+                  
                   return (
                     <div
                       id={`watch-${option.id}`}
                       className={`snap-center h-full inline-block whitespace-nowrap data-core-scroller-item `}
-                      key={option.id}
-                    >
+                      key={option.id}>
                       <button
-                        className="snap-center whitespace-normal flex justify-center items-end m-0 p-0 w-[312px] h-full overflow-hidden bg-none relative text-center"
-                        onClick={() => handleSizeClick(option)}
-                      >
+                        className="snap-center whitespace-normal flex justify-center items-end m-0 p-0  w-[312px] h-full overflow-hidden bg-none relative text-center"
+                        onClick={() => handleSizeClick(option)}>
                         <Image
                           src={currentBandImage}
                           height={1000}
                           width={1000}
                           alt={option.name}
-                          className={`object-cover absolute w-[52vh] max-w-[${width}px]`}
+                          className={`object-cover absolute  w-[52vh] `}
+                          style={{ maxWidth: `${width}px` }}
                         />
                         <Image
                           src={currentCaseImage}
                           height={1000}
                           width={1000}
                           alt={option.name}
-                          className={`object-cover absolute w-[52vh] max-w-[${width}px] `}
+                          className={`object-cover absolute w-[52vh] `}
+                          style={{ maxWidth: `${width}px` }}
                         />
                       </button>
                     </div>

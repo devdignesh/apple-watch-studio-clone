@@ -6,11 +6,12 @@ import React, { useState } from "react";
 
 const page = () => {
   const [isGreeting, setIsGreeting] = useState<boolean>(true);
+  const [isCollectionModel, setIsCollectionModel] = useState<boolean>(false);
 
   return (
     <>
-      <Header isGreeting={isGreeting}/>
-      <Studio setIsGreeting={setIsGreeting} isGreeting={isGreeting} />
+      <Header isGreeting={isGreeting} setIsCollectionModel={setIsCollectionModel}/>
+      <Studio setIsGreeting={setIsGreeting} isGreeting={isGreeting} isCollectionModel={isCollectionModel} setIsCollectionModel={setIsCollectionModel}/>
     </>
   );
 };

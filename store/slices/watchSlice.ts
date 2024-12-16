@@ -1,6 +1,6 @@
 import bands from "@/data/bands";
 import cases from "@/data/cases";
-import { watchCollections } from "@/data/watchCollections";
+import defaultValues from "@/data/default";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface Case {
@@ -15,7 +15,7 @@ interface Band {
   name: string;
   price: number;
   image: string;
- }
+}
 
 interface WatchState {
   collection: string;
@@ -28,30 +28,26 @@ interface WatchState {
   currentCaseImage: string;
   currentBandImage: string;
   currentSideViewImage: string;
-  options: {
-    name: string;
-    sizes: { id: string; name: string; price: number }[];
-  }[];
 }
 
 const initialCase: Case = {
   id: "aluminum_black",
   name: "Jet Black Aluminum Case",
   price: 359,
-  image: "/images/cases/aluminum_black.png",
+  image: "/images/cases/aluminum_black_10.png",
 };
 
 const initialBand: Band = {
   id: "solo_black",
   name: "Black Solo Loop",
   price: 49,
-  image: "/images/bands/solo_black.jpg",
- };
+  image: "/images/bands/solo_black_10.jpg",
+};
 
 const initialSize = { id: "46mm", name: "46mm", price: 50 };
 
 const initialState: WatchState = {
-  collection: "APPLE WATCH SERIES 10",
+  collection: "APPLE_WATCH_SERIES_10",
   selectedCase: initialCase,
   selectedBand: initialBand,
   selectedMainCase: {
@@ -64,7 +60,6 @@ const initialState: WatchState = {
   currentCaseImage: initialCase.image,
   currentBandImage: initialBand.image,
   currentSideViewImage: `/images/side/${initialCase.id}_${initialBand.id}_side.jpg`,
-  options: watchCollections,
 };
 
 const watchSlice = createSlice({
@@ -94,8 +89,14 @@ const watchSlice = createSlice({
       state,
       action: PayloadAction<{ id: string; name: string }>
     ) {
-      // Find the main case
-      const mainCase = cases.find((c) => c.id === action.payload.id);
+      const collectionCases = cases.find(
+        (col) => col.collectionId === state.collection
+      );
+      if (!collectionCases) return;
+
+      const mainCase = collectionCases.case.find(
+        (c) => c.id === action.payload.id
+      );
       if (!mainCase) return;
 
       // Select the first variation of the main case
@@ -123,7 +124,7 @@ const watchSlice = createSlice({
     ) {
       state.selectedBand = action.payload.subBand;
       state.selectedMainBand = action.payload.mainBand;
-      state.currentBandImage = action.payload.subBand.image
+      state.currentBandImage = action.payload.subBand.image;
 
       // Dynamically update side view image
       state.currentSideViewImage = `/images/cases/side/${state.selectedCase.id}_${state.selectedBand.id}_side.png`;
@@ -137,7 +138,15 @@ const watchSlice = createSlice({
       state,
       action: PayloadAction<{ id: string; name: string }>
     ) {
-      const mainBand = bands.find((b) => b.id === action.payload.id);
+
+      const collectionBands = bands.find(
+        (col) => col.collectionId === state.collection
+      );
+      if (!collectionBands) return;
+
+      const mainBand = collectionBands.band.find(
+        (c) => c.id === action.payload.id
+      );
       if (!mainBand) return;
 
       const firstBand = mainBand.variations[0];
@@ -148,8 +157,7 @@ const watchSlice = createSlice({
       state.currentBandImage = firstBand.image;
 
       state.totalPrice =
-       state.selectedCase.price + firstBand.price + state.size.price;
- 
+        state.selectedCase.price + firstBand.price + state.size.price;
     },
 
     setSize(
@@ -163,6 +171,27 @@ const watchSlice = createSlice({
 
     setCollection: (state, action) => {
       state.collection = action.payload;
+
+      
+      const defaults = defaultValues[action.payload as keyof typeof defaultValues];
+      if (defaults) {
+        state.selectedCase = defaults.selectedCase;
+        state.selectedMainCase = defaults.selectedMainCase;
+        state.selectedBand = defaults.selectedBand;
+        state.selectedMainBand = defaults.selectedMainBand;
+        state.size = defaults.size;
+
+        // Update dependent fields
+        state.currentCaseImage = defaults.selectedCase.image;
+        state.currentBandImage = defaults.selectedBand.image;
+        state.currentSideViewImage = `/images/side/${defaults.selectedCase.id}_${defaults.selectedBand.id}_side.jpg`;
+
+        // Recalculate total price
+        state.totalPrice =
+          defaults.selectedCase.price +
+          defaults.selectedBand.price +
+          state.size.price;
+      }
     },
   },
 });
@@ -173,6 +202,7 @@ export const {
   setSize,
   setSelectedMainCase,
   setSelectedMainBand,
+  setCollection,
 } = watchSlice.actions;
 
 export default watchSlice.reducer;

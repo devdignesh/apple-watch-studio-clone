@@ -4,20 +4,27 @@ import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import cases from "@/data/cases";
 import { setCase } from "@/store/slices/watchSlice";
+import { getImageSize } from "@/utils/imageSizes";
 
 const CaseSlider = () => {
   const dispatch = useDispatch();
 
   // Get the selected case image from the store
-  const { currentCaseImage, currentBandImage, size } = useSelector(
+  const { currentCaseImage, currentBandImage, size,collection } = useSelector(
     (state: any) => state.watch
   );
 
+  const collectionCases = cases.find(
+    (col) => col.collectionId === collection
+  );
+
   // Flatten all case variations
-  const allVariations = cases.flatMap(
+  const allVariations = collectionCases?.case.flatMap(
     (caseCategory) => caseCategory.variations
   );
   console.log("allVariations:", allVariations);
+
+  const { width, height } = getImageSize(size.name);
 
   // Ref for the slider container
   const sliderRef = useRef<HTMLDivElement>(null);
@@ -43,7 +50,7 @@ const CaseSlider = () => {
 
   useEffect(() => {
     // On mount, center the selected case in the slider
-    const selectedElement = allVariations.find(
+    const selectedElement = allVariations?.find(
       (variation) => variation.image === currentCaseImage
     );
 
@@ -70,8 +77,7 @@ const CaseSlider = () => {
         className="relative"
       >
         <div
-          className={`h-[53vh] max-h-[508px] min-h-[314px] overflow-y-hidden m-auto w-full relative z-10`}
-        >
+          className={`h-[53vh] max-h-[508px] min-h-[314px] overflow-y-hidden m-auto w-full relative z-10`}>
           <div
             className="overflow-y-hidden h-full whitespace-nowrap overflow-x-scroll pb-[20px] snap-none"
             ref={sliderRef}
@@ -81,10 +87,12 @@ const CaseSlider = () => {
               style={{ overflowX: "scroll" }}
             >
               {/* Show list of cases */}
-              {allVariations.map((variation) => {
-                const mainCase = cases.find((c) =>
+              {allVariations?.map((variation) => {
+
+                const mainCase = collectionCases?.case.find((c) =>
                   c.variations.some((v) => v.id === variation.id)
                 );
+                
                 return (
                   <div
                     id={`case-${variation.id}`}

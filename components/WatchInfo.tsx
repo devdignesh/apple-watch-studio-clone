@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 
 const WatchInfo = () => {
-  const { collection, size, options, selectedCase, selectedBand, totalPrice } =
+  const { collection, size, selectedCase, selectedBand, totalPrice } =
     useSelector((state: any) => state.watch);
 
   return (

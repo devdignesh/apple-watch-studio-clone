@@ -9,11 +9,17 @@ const BandSlider = () => {
   const dispatch = useDispatch();
 
   // Get the selected case image from the store
-  const caseImage = useSelector((state: any) => state.watch.currentCaseImage);
-  const bandImage = useSelector((state: any) => state.watch.currentBandImage);
+ 
+   const { currentCaseImage, currentBandImage, size,collection } = useSelector(
+      (state: any) => state.watch
+    );
+
+  const collectionBands = bands.find(
+    (col) => col.collectionId === collection
+  );
 
   // Flatten all band variations
-  const allVariations = bands.flatMap(
+  const allVariations = collectionBands?.band.flatMap(
     (bandCategory) => bandCategory.variations
   );
   console.log("allVariations:", allVariations);
@@ -42,8 +48,8 @@ const BandSlider = () => {
 
   useEffect(() => {
     // On mount, center the selected band in the slider
-    const selectedElement = allVariations.find(
-      (variation) => variation.image === bandImage
+    const selectedElement = allVariations?.find(
+      (variation) => variation.image === currentBandImage
     );
 
     if (selectedElement && sliderRef.current) {
@@ -56,7 +62,7 @@ const BandSlider = () => {
         });
       }
     }
-  }, [bandImage, allVariations]);
+  }, [currentBandImage, allVariations]);
 
   return (
     <AnimatePresence>
@@ -80,8 +86,8 @@ const BandSlider = () => {
               style={{ overflowX: "scroll" }}
             >
               {/* Shows list of bands */}
-              {allVariations.map((variation) => {
-                const mainBand = bands.find((b) =>
+              {allVariations?.map((variation) => {
+                const mainBand = collectionBands?.band.find((b) =>
                   b.variations.some((v) => v.id === variation.id)
                 );
                 return (
@@ -110,7 +116,7 @@ const BandSlider = () => {
         </div>
         <div className="absolute top-[-4px] z-10 h-auto max-w-[500px] w-[52vh] start-[50%] combinedimage m-auto">
           <Image
-            src={caseImage}
+            src={currentCaseImage}
             height={1000}
             width={1000}
             alt="watch band preview"

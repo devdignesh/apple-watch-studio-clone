@@ -3,11 +3,11 @@ export const getImageSize = (size: string) => {
     case "46mm":
       return { width: 500, height: 500 }; 
     case "42mm":
-      return { width: 450, height: 450 }; 
+      return { width: 460, height: 460 }; 
     case "40mm":
-      return { width: 400, height: 400 }; 
+      return { width: 440, height: 440 }; 
     case "44mm":
-      return { width: 450, height: 450 }; 
+      return { width: 480, height: 480 }; 
     default:
       return { width: 500, height: 500 }; 
   }

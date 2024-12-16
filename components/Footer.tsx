@@ -1,6 +1,10 @@
 import { WatchSizeIcon } from "@/assets/WatchSizeIcon";
 import React, { useState } from "react";
-import { setSelectedMainBand, setSelectedMainCase, setSize } from "@/store/slices/watchSlice";
+import {
+  setSelectedMainBand,
+  setSelectedMainCase,
+  setSize,
+} from "@/store/slices/watchSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleButton } from "@/store/slices/buttonSlice";
 import { motion } from "framer-motion";
@@ -8,21 +12,30 @@ import cases from "@/data/cases";
 import bands from "@/data/bands";
 import { WatchBandIcon } from "@/assets/WatchBandIcon";
 import { WatchCaseIcon } from "@/assets/WatchCaseIcon";
+import { watchCollections } from "@/data/watchCollections";
 
 const Footer = () => {
   const dispatch = useDispatch();
   const {
     collection,
     size,
-    options,
     selectedCase,
     selectedBand,
     totalPrice,
     selectedMainCase,
-    selectedMainBand
+    selectedMainBand,
   } = useSelector((state: any) => state.watch);
   const openButton = useSelector((state: any) => state.button.openButton);
 
+  const filteredCases = cases.find(
+    (item) => item.collectionId === collection
+  );
+
+  const filteredCBands = bands.find(
+    (item) => item.collectionId === collection
+  );
+
+  
   return (
     <footer className="bottom-[40px] box-border mt-[72px]  overflow-hidden py-[24px]  text-center whitespace-nowrap w-full">
       <div className="min-h-[35px]  overflow-x-scroll pb-[5px] flex justify-center w-full">
@@ -34,16 +47,17 @@ const Footer = () => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.1, ease: "easeInOut" }}
-            className="space-x-3 ">
+            className="space-x-3 "
+          >
             {openButton === "Size" ? (
-              options
-                .find((opt: any) => opt.name === collection)
+              watchCollections
+                .find((opt: any) => opt.id === collection)
                 ?.sizes.map((option: any) => (
                   <button
-                    key={option.name}
+                    key={option.id}
                     onClick={() => dispatch(setSize(option))}
                     className={`my-[5px] min-h-[20px]  text-[17px] align-middle text-[#1d1d1f] py-[5px] ${
-                      size.name === option.name
+                      size.name === option.id
                         ? "font-proTextSemibold"
                         : "font-proTextRegular"
                     }`}
@@ -67,7 +81,7 @@ const Footer = () => {
             <WatchCaseIcon />
           </div>
           {openButton === "Case" ? (
-            cases.map((mainCase: any) => (
+            filteredCases?.case.map((mainCase: any) => (
               <button
                 key={mainCase.id}
                 onClick={() =>
@@ -102,7 +116,7 @@ const Footer = () => {
             <WatchBandIcon />
           </div>
           {openButton === "Band" ? (
-            bands.map((mainBand: any) => (
+            filteredCBands?.band.map((mainBand: any) => (
               <button
                 key={mainBand.id}
                 onClick={() =>
