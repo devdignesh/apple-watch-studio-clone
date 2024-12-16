@@ -1,36 +1,42 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Apple Watch Studio App
+A responsive and interactive web app built with Next.js and Tailwind CSS, allowing users to customize their [Apple Watch](https://www.apple.com/shop/studio/apple-watch) with different bands and cases.
 
-## Getting Started
+## Technologies Used
+- [Next.js](https://nextjs.org/) (React Framework)
+- [Tailwind CSS](https://tailwindcss.com/) (Utility-first CSS Framework)
+- [Redux](https://redux-toolkit.js.org/) (State Management)
+- [Framer Motion](https://motion.dev/) (For animations)
+- [TypeScript](https://www.typescriptlang.org/) (For type safety)
 
-First, run the development server:
+## Features
+- Select and customize Apple Watch bands and cases.
+- View and save side view images for different configurations.
+- Smooth animations for UI transitions and product selections.
+- Mobile and desktop responsive design.
+- Interactive sliders for size, case, and band selection.
+  
+## Installation
+1. Clone the repository:
+
+````bash
+git clone https://github.com/devdignesh/apple-watch-studio-clone.git
+cd apple-watch-studio-clone
+````
+
+2. Install dependencies: Using npm:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+3. Open your browser and visit http://localhost:3000 to see the app in action.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Contributing
+1. Fork the repository.
+2. Create a new branch ``git checkout -b feature-branch``.
+3. Make your changes.
+4. Push to your branch ``git push origin feature-branch``.
+5. Create a pull request.
+ 
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.

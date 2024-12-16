@@ -118,7 +118,7 @@ const BandSlider = () => {
             src={currentCaseImage}
             height={1000}
             width={1000}
-            alt="watch band preview"
+            alt="watch case preview"
             className="object-cover absolute w-[52vh] max-w-[500px] h-auto "
           />
         </div>
