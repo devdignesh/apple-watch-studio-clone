@@ -22,8 +22,6 @@ const CaseSlider = () => {
   const allVariations = collectionCases?.case.flatMap(
     (caseCategory) => caseCategory.variations
   );
-  console.log("allVariations:", allVariations);
-
   const { width, height } = getImageSize(size.name);
 
   // Ref for the slider container
@@ -56,6 +54,7 @@ const CaseSlider = () => {
 
     if (selectedElement && sliderRef.current) {
       const element = document.getElementById(`case-${selectedElement.id}`);
+      
       if (element) {
         element.scrollIntoView({
           behavior: "smooth",
@@ -100,7 +99,7 @@ const CaseSlider = () => {
                     key={variation.id}
                   >
                     <button
-                      className="snap-center whitespace-normal flex justify-center items-center m-0 p-0 w-[312px] h-full overflow-hidden bg-none relative text-center"
+                      className="snap-center whitespace-normal flex justify-center items-center m-0 p-0 w-[35vh] md:w-[312px] h-full overflow-hidden bg-none relative text-center"
                       onClick={() => handleCaseClick(variation, mainCase)}
                     >
                       <Image

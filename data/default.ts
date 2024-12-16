@@ -1,4 +1,5 @@
 const defaultValues = {
+  // for APPLE_WATCH_SERIES_10
   APPLE_WATCH_SERIES_10: {
     selectedCase: {
       id: "aluminum_black",
@@ -22,6 +23,8 @@ const defaultValues = {
     },
     size: { id: "46mm", name: "46mm", price: 50 },
   },
+
+  // for APPLE_WATCH_HERMÈS_SERIES_10
   APPLE_WATCH_HERMÈS_SERIES_10: {
     selectedCase: {
       id: "titanium_silver",
@@ -45,6 +48,8 @@ const defaultValues = {
     },
     size: { id: "46mm", name: "46mm", price: 150 }
   },
+
+  // for APPLE_WATCH_SE
   APPLE_WATCH_SE: {
     selectedCase: {
       id: "aluminum_silver",

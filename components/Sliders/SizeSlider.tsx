@@ -38,7 +38,6 @@ const SizeSlider = () => {
       .find((opt: any) => opt.id === collection)
       ?.sizes.find((s: any) => s.id === size.id);
 
-    console.log("selected:", selected);
 
     if (selected && sliderRef.current) {
       const element = document.getElementById(`watch-${selected.id}`);

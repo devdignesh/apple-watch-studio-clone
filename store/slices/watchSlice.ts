@@ -38,7 +38,7 @@ const initialCase: Case = {
 };
 
 const initialBand: Band = {
-  id: "solo_black",
+  id: "black_solo",
   name: "Black Solo Loop",
   price: 49,
   image: "/images/bands/solo_black_10.jpg",
@@ -78,13 +78,14 @@ const watchSlice = createSlice({
       state.currentCaseImage = action.payload.subCase.image;
 
       // Dynamically update side view image
-      state.currentSideViewImage = `/images/cases/side/${state.selectedCase.id}_${state.selectedBand.id}_side.png`;
+      state.currentSideViewImage = `/images/side/${state.selectedCase.id}_${state.selectedBand.id}_side.jpg`;
 
       // Recalculate total price
       state.totalPrice =
         state.selectedCase.price + state.selectedBand.price + state.size.price;
     },
 
+    // When user change main case category from footer(Tab) so handle this event using setSelectedMainCase
     setSelectedMainCase(
       state,
       action: PayloadAction<{ id: string; name: string }>
@@ -108,7 +109,7 @@ const watchSlice = createSlice({
       state.currentCaseImage = firstCase.image;
 
       // Dynamically update side view image
-      state.currentSideViewImage = `/images/cases/side/${firstCase.id}_${state.selectedBand.id}_side.png`;
+      state.currentSideViewImage = `/images/side/${firstCase.id}_${state.selectedBand.id}_side.jpg`;
 
       // Recalculate total price
       state.totalPrice =
@@ -127,18 +128,18 @@ const watchSlice = createSlice({
       state.currentBandImage = action.payload.subBand.image;
 
       // Dynamically update side view image
-      state.currentSideViewImage = `/images/cases/side/${state.selectedCase.id}_${state.selectedBand.id}_side.png`;
+      state.currentSideViewImage = `/images/side/${state.selectedCase.id}_${state.selectedBand.id}_side.jpg`;
 
       // Recalculate total price
       state.totalPrice =
         state.selectedCase.price + state.selectedBand.price + state.size.price;
     },
 
+    // When user change main band category from footer(Tab) so handle this event using setSelectedMainBand
     setSelectedMainBand(
       state,
       action: PayloadAction<{ id: string; name: string }>
     ) {
-
       const collectionBands = bands.find(
         (col) => col.collectionId === state.collection
       );
@@ -172,8 +173,8 @@ const watchSlice = createSlice({
     setCollection: (state, action) => {
       state.collection = action.payload;
 
-      
-      const defaults = defaultValues[action.payload as keyof typeof defaultValues];
+      const defaults =
+        defaultValues[action.payload as keyof typeof defaultValues];
       if (defaults) {
         state.selectedCase = defaults.selectedCase;
         state.selectedMainCase = defaults.selectedMainCase;
@@ -193,6 +194,20 @@ const watchSlice = createSlice({
           state.size.price;
       }
     },
+
+    saveSideViewImage: (state) => {
+      const sideViewImage = state.currentSideViewImage;
+      console.log("sideViewImage:",sideViewImage)
+      const link = document.createElement("a");
+
+      // Set the link's href to the image URL
+      link.href = sideViewImage;
+
+      link.download = `${state.selectedCase.id}_${state.selectedBand.id}_side.jpg`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    },
   },
 });
 
@@ -203,6 +218,7 @@ export const {
   setSelectedMainCase,
   setSelectedMainBand,
   setCollection,
+  saveSideViewImage,
 } = watchSlice.actions;
 
 export default watchSlice.reducer;

@@ -22,7 +22,6 @@ const BandSlider = () => {
   const allVariations = collectionBands?.band.flatMap(
     (bandCategory) => bandCategory.variations
   );
-  console.log("allVariations:", allVariations);
 
   // Ref for the slider container
   const sliderRef = useRef<HTMLDivElement>(null);
@@ -97,7 +96,7 @@ const BandSlider = () => {
                     key={variation.id}
                   >
                     <button
-                      className="snap-center whitespace-normal flex justify-center items-center m-0 p-0 w-[312px] h-full overflow-hidden bg-none relative text-center"
+                      className="snap-center whitespace-normal flex justify-center items-center m-0 p-0 w-[35vh] md:w-[312px] h-full overflow-hidden bg-none relative text-center"
                       onClick={() => handleBandClick(variation, mainBand)}
                     >
                       <Image

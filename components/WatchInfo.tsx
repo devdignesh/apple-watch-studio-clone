@@ -6,7 +6,7 @@ const WatchInfo = () => {
     useSelector((state: any) => state.watch);
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col w-[70%] md:w-[60%]">
       <span className="text-[#6e6e73] font-proTextSemibold tracking-[-.01em] mb-[4px] text-xs">
         {collection}
       </span>

@@ -3,15 +3,17 @@ import Link from "next/link";
 import React from "react";
 import { IoIosArrowDown } from "react-icons/io";
 import { motion } from "framer-motion";
+import { useDispatch, useSelector } from "react-redux";
+import { setIsCollectionModel } from "@/store/slices/uiSlice";
+import { saveSideViewImage } from "@/store/slices/watchSlice";
 
-interface HeaderProps {
-  isGreeting: boolean;
-  setIsCollectionModel: React.Dispatch<React.SetStateAction<boolean>>;
-}
+const Header = () => {
+  const dispatch = useDispatch();
 
-const Header: React.FC<HeaderProps> = ({ isGreeting, setIsCollectionModel }) => {
+  const { isGreeting } = useSelector((state: any) => state.ui);
+
   return (
-    <header className="py-[24px] pl-[32px] h-[5.5rem] pr-[20px] flex flex-col md:flex-row justify-between items-center">
+    <header className="py-[24px]   pl-[32px] h-[5.5rem] pr-[20px] flex flex-col md:flex-row justify-between items-center">
       <div className="md:w-[88%] w-full flex md:justify-start justify-center">
         <Link href={"/"}>
           <Image
@@ -33,7 +35,7 @@ const Header: React.FC<HeaderProps> = ({ isGreeting, setIsCollectionModel }) => 
               viewport={{ once: true, amount: 0.4 }}
               transition={{ duration: 0.5, ease: "easeIn" }}
               className="flex items-center tracking-tight justify-center md:justify-center font-proTextRegular text-[17px] space-x-1"
-              onClick={() => setIsCollectionModel(true)}
+              onClick={() => dispatch(setIsCollectionModel(true))}
             >
               <span>Collections</span>
               <span>
@@ -47,6 +49,7 @@ const Header: React.FC<HeaderProps> = ({ isGreeting, setIsCollectionModel }) => 
               viewport={{ once: true, amount: 0.4 }}
               transition={{ duration: 0.5, delay: 1.5, ease: "easeIn" }}
               className="font-proTextRegular bg-[#0071e3] px-4 py-2 rounded-full text-[14px] text-white md:ml-auto"
+              onClick={() => dispatch(saveSideViewImage())} // Dispatch action on save
             >
               Save
             </motion.button>

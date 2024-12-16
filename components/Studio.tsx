@@ -10,23 +10,15 @@ import WatchInfo from "./WatchInfo";
 import Greetings from "./Greetings";
 import CollectionModel from "./models/CollectionModel";
 
-interface GreetingProps {
-  setIsGreeting: React.Dispatch<React.SetStateAction<boolean>>;
-  isGreeting: boolean;
-  isCollectionModel : boolean;
-  setIsCollectionModel:  React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-const Studio: React.FC<GreetingProps> = ({ setIsGreeting, isGreeting,isCollectionModel,setIsCollectionModel }) => {
-  const caseImage = useSelector((state: any) => state.watch.currentCaseImage);
-  const bandImage = useSelector((state: any) => state.watch.currentBandImage);
-
-  const sideViewImage = useSelector(
-    (state: any) => state.watch.currentSideViewImage
+const Studio = () => {
+  const { currentCaseImage, currentBandImage, currentSideViewImage } =
+    useSelector((state: any) => state.watch);
+  const { isGreeting, isCollectionModel } = useSelector(
+    (state: any) => state.ui
   );
 
   const [sideview, setSideView] = useState(false);
-  const openButton = useSelector((state: any) => state.button.openButton);
+  const { openButton } = useSelector((state: any) => state.button);
 
   return (
     <>
@@ -37,9 +29,10 @@ const Studio: React.FC<GreetingProps> = ({ setIsGreeting, isGreeting,isCollectio
         exit={{ opacity: 0, y: -10 }}
         transition={{ duration: 0.5, delay: 0.3, ease: "easeOut" }}
       >
-        {isGreeting && <Greetings setIsGreeting={setIsGreeting} />}
+        {isGreeting && <Greetings />}
 
-        {isCollectionModel && <CollectionModel setIsCollectionModel={setIsCollectionModel}/>}
+        {isCollectionModel && <CollectionModel />}
+
         <div className="text-center">
           <motion.div
             initial={{
@@ -59,7 +52,7 @@ const Studio: React.FC<GreetingProps> = ({ setIsGreeting, isGreeting,isCollectio
               ease: "easeOut",
               delay: 0.4,
             }}
-            className="relative"
+            className="relative overflow-hidden"
           >
             {openButton === "Size" && <SizeSlider />}
             {openButton === "Case" && <CaseSlider />}
@@ -67,8 +60,9 @@ const Studio: React.FC<GreetingProps> = ({ setIsGreeting, isGreeting,isCollectio
 
             {openButton === null && (
               <div
-                className={`h-[53vh] max-h-[29.88rem] min-h-[18.47rem] m-auto max-w-[500px] w-[52vh] relative`}
+                className={`h-[45vh] md:h-[50vh] lg:h-[53vh] max-h-[29.88rem] min-h-[18.47rem] m-auto max-w-[300px] md:max-w-[400px] lg:max-w-[500px] w-[42vh] md:w-[48vh] lg:w-[52vh] relative`}
               >
+                {/* Default band & case image with animation */}
                 {!sideview && (
                   <>
                     <AnimatePresence>
@@ -83,24 +77,25 @@ const Studio: React.FC<GreetingProps> = ({ setIsGreeting, isGreeting,isCollectio
                         }}
                       >
                         <Image
-                          src={bandImage}
+                          src={currentBandImage}
                           height={1000}
                           width={1000}
                           alt="watch band preview"
-                          className="object-cover absolute w-[52vh] max-w-[500px] "
+                          className="object-cover absolute w-[42vh] md:w-[48vh] lg:w-[52vh] max-w-[300px] md:max-w-[400px] lg:max-w-[500px]"
                         />
                         <Image
-                          src={caseImage}
+                          src={currentCaseImage}
                           height={1000}
                           width={1000}
                           alt="watch case preview"
-                          className="object-cover  absolute w-[52vh] max-w-[500px]  "
+                          className="object-cover absolute w-[42vh] md:w-[48vh] lg:w-[52vh] max-w-[300px] md:max-w-[400px] lg:max-w-[500px]"
                         />
                       </motion.div>
                     </AnimatePresence>
                   </>
                 )}
 
+                {/* Side view section with animation presence */}
                 {sideview && (
                   <AnimatePresence>
                     <motion.div
@@ -114,11 +109,11 @@ const Studio: React.FC<GreetingProps> = ({ setIsGreeting, isGreeting,isCollectio
                       }}
                     >
                       <Image
-                        src={sideViewImage}
+                        src={currentSideViewImage}
                         height={1000}
                         width={1000}
                         alt="watch side preview"
-                        className="object-cover  absolute w-[52vh] max-w-[500px]  "
+                        className="object-cover absolute w-[42vh] md:w-[48vh] lg:w-[52vh] max-w-[300px] md:max-w-[400px] lg:max-w-[500px]"
                       />
                     </motion.div>
                   </AnimatePresence>
@@ -136,7 +131,7 @@ const Studio: React.FC<GreetingProps> = ({ setIsGreeting, isGreeting,isCollectio
             whileInView={{ opacity: 1 }}
             viewport={{ once: true, amount: 0.4 }}
             transition={{ duration: 0.5, delay: 1.5, ease: "easeInOut" }}
-            className="m-auto flex flex-col pt-[6vh] text-center w-[60%] font-proTextRegular text-sm   leading-[1.42]"
+            className="m-auto flex flex-col pt-[6vh] text-center justify-center items-center font-proTextRegular text-sm   leading-[1.42]"
           >
             <button
               onClick={() => setSideView(!sideview)}

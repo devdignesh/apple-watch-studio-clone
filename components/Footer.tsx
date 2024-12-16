@@ -27,19 +27,14 @@ const Footer = () => {
   } = useSelector((state: any) => state.watch);
   const openButton = useSelector((state: any) => state.button.openButton);
 
-  const filteredCases = cases.find(
-    (item) => item.collectionId === collection
-  );
+  const filteredCases = cases.find((item) => item.collectionId === collection);
 
-  const filteredCBands = bands.find(
-    (item) => item.collectionId === collection
-  );
+  const filteredCBands = bands.find((item) => item.collectionId === collection);
 
-  
   return (
-    <footer className="bottom-[40px] box-border mt-[72px]  overflow-hidden py-[24px]  text-center whitespace-nowrap w-full">
-      <div className="min-h-[35px]  overflow-x-scroll pb-[5px] flex justify-center w-full">
-        <div className="bg-[#e8e8ed] space-x-2 rounded-full  items-center flex  text-[#1d1d1f] border-none  mx-[6px] px-[18px] font-proTextRegular font-[17px] tracking-[-.022em] ">
+    <footer className="bottom-[40px] box-border mt-[0px] md:mt-[72px]  py-[24px]  text-center whitespace-nowrap w-full">
+      <div className="min-h-[35px] overflow-x-scroll pb-[5px] flex justify-center w-full">
+        <div className="bg-[#e8e8ed] space-x-2 rounded-full items-center flex text-[#1d1d1f] border-none mx-[6px] px-4 sm:px-6 font-proTextRegular text-[14px] sm:text-[16px] md:text-[17px] tracking-[-.022em]">
           <div className="inline-block">
             <WatchSizeIcon />
           </div>
@@ -47,7 +42,7 @@ const Footer = () => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.1, ease: "easeInOut" }}
-            className="space-x-3 "
+            className="space-x-2 sm:space-x-3"
           >
             {openButton === "Size" ? (
               watchCollections
@@ -56,7 +51,7 @@ const Footer = () => {
                   <button
                     key={option.id}
                     onClick={() => dispatch(setSize(option))}
-                    className={`my-[5px] min-h-[20px]  text-[17px] align-middle text-[#1d1d1f] py-[5px] ${
+                    className={`my-[5px] min-h-[20px] text-[16px] md:text-[17px]  align-middle text-[#1d1d1f] py-[5px] ${
                       size.name === option.id
                         ? "font-proTextSemibold"
                         : "font-proTextRegular"
@@ -68,7 +63,7 @@ const Footer = () => {
             ) : (
               <button
                 onClick={() => dispatch(toggleButton("Size"))}
-                className="my-[5px] min-h-[20px]  font-proTextRegular text-[17px]  align-middle text-[#1d1d1f]  py-[5px]"
+                className="my-[5px] min-h-[20px] font-proTextRegular text-[16px] md:text-[17px]  align-middle text-[#1d1d1f] py-[5px]"
               >
                 Size
               </button>
@@ -76,7 +71,7 @@ const Footer = () => {
           </motion.div>
         </div>
 
-        <div className="bg-[#e8e8ed] space-x-2 rounded-full  items-center flex  text-[#1d1d1f] border-none  mx-[6px] px-[18px] font-proTextRegular font-[17px] tracking-[-.022em] ">
+        <div className="bg-[#e8e8ed] space-x-2 rounded-full  items-center flex  text-[#1d1d1f] border-none  mx-[6px] px-4 sm:px-6  font-proTextRegular text-[14px] sm:text-[16px] md:text-[17px] tracking-[-.022em] ">
           <div className="inline-block">
             <WatchCaseIcon />
           </div>
@@ -92,7 +87,7 @@ const Footer = () => {
                     })
                   )
                 }
-                className={`my-[5px] min-h-[20px] px-1 text-[17px] align-middle text-[#1d1d1f] py-[5px] ${
+                className={`my-[5px] min-h-[20px] text-[16px] md:text-[17px]  align-middle text-[#1d1d1f] py-[5px] ${
                   selectedMainCase.id === mainCase.id
                     ? "font-proTextSemibold"
                     : "font-proTextRegular"
@@ -104,14 +99,14 @@ const Footer = () => {
           ) : (
             <button
               onClick={() => dispatch(toggleButton("Case"))}
-              className="my-[5px] min-h-[20px]  font-proTextRegular text-[17px]  align-middle text-[#1d1d1f]  py-[6px]"
+              className="my-[5px] min-h-[20px]  font-proTextRegular text-[16px] md:text-[17px]   align-middle text-[#1d1d1f]  py-[6px]"
             >
               Case
             </button>
           )}
         </div>
 
-        <div className="bg-[#e8e8ed] space-x-2 rounded-full  items-center flex  text-[#1d1d1f] border-none  mx-[6px] px-[18px] font-proTextRegular font-[17px] tracking-[-.022em] ">
+        <div className="bg-[#e8e8ed] space-x-2 rounded-full  items-center flex  text-[#1d1d1f] border-none  mx-[6px] px-4 sm:px-6  font-proTextRegular text-[14px] sm:text-[16px] md:text-[17px] tracking-[-.022em] ">
           <div className="inline-block">
             <WatchBandIcon />
           </div>
@@ -127,7 +122,7 @@ const Footer = () => {
                     })
                   )
                 }
-                className={`my-[5px] min-h-[20px] px-1 text-[17px] align-middle text-[#1d1d1f] py-[5px] ${
+                className={`my-[5px] min-h-[20px] px-1 text-[16px] md:text-[17px]  align-middle text-[#1d1d1f] py-[5px] ${
                   selectedMainBand.id === mainBand.id
                     ? "font-proTextSemibold"
                     : "font-proTextRegular"
@@ -139,7 +134,7 @@ const Footer = () => {
           ) : (
             <button
               onClick={() => dispatch(toggleButton("Band"))}
-              className="my-[5px] min-h-[20px]  font-proTextRegular text-[17px]  align-middle text-[#1d1d1f]  py-[6px]"
+              className="my-[5px] min-h-[20px]  font-proTextRegular  text-[16px] md:text-[17px]  align-middle text-[#1d1d1f]  py-[6px]"
             >
               Band
             </button>
