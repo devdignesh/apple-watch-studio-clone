@@ -6,14 +6,41 @@ import { motion } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
 import { setIsCollectionModel } from "@/store/slices/uiSlice";
 import { saveSideViewImage } from "@/store/slices/watchSlice";
+import { useRouter } from "next/navigation";
 
 const Header = () => {
   const dispatch = useDispatch();
+  const router = useRouter();
 
   const { isGreeting } = useSelector((state: any) => state.ui);
 
+  const {
+    selectedCase,
+    selectedMainBand,
+    selectedMainCase,
+    selectedBand,
+    size,
+    totalPrice,
+  } = useSelector((state: any) => state.watch);
+
+  const handleSave = () => {
+    // Construct search parameters
+    const params = new URLSearchParams({
+      selectedCase: selectedCase.id || "",
+      selectedMainBand: selectedMainBand.id || "",
+      selectedMainCase: selectedMainCase.id || "",
+      selectedBand: selectedBand.id || "",
+      size: size.id || "",
+      totalPrice: totalPrice.toString(),
+    });
+
+    // Dispatch save action and redirect
+    dispatch(saveSideViewImage());
+    router.push(`/buy-watch?${params.toString()}`);
+  };
+
   return (
-    <header className="py-[24px]   pl-[32px] h-[5.5rem] pr-[20px] flex flex-col md:flex-row justify-between items-center">
+    <header className="py-[24px]  pl-[32px] h-[5.5rem] pr-[20px] flex flex-col md:flex-row justify-between items-center">
       <div className="md:w-[88%] w-full flex md:justify-start justify-center">
         <Link href={"/"}>
           <Image
@@ -49,7 +76,7 @@ const Header = () => {
               viewport={{ once: true, amount: 0.4 }}
               transition={{ duration: 0.5, delay: 1.5, ease: "easeIn" }}
               className="font-proTextRegular bg-[#0071e3] px-4 py-2 rounded-full text-[14px] text-white md:ml-auto"
-              onClick={() => dispatch(saveSideViewImage())} // Dispatch action on save
+              onClick={handleSave} // Dispatch action on save
             >
               Save
             </motion.button>

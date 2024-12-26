@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   isGreeting: true,
   isCollectionModel: false,
+  isSideview:false
 };
 
 const uiSlice = createSlice({
@@ -15,8 +16,11 @@ const uiSlice = createSlice({
     setIsCollectionModel: (state, action) => {
       state.isCollectionModel = action.payload;
     },
+    setIsSideView: (state, action) => {
+      state.isSideview = action.payload
+    }
   },
 });
 
-export const { setIsGreeting, setIsCollectionModel } = uiSlice.actions;
+export const { setIsGreeting, setIsCollectionModel,setIsSideView } = uiSlice.actions;
 export default uiSlice.reducer;

@@ -7,14 +7,12 @@ interface Case {
   id: string;
   name: string;
   price: number;
-  image: string;
 }
 
 interface Band {
   id: string;
   name: string;
   price: number;
-  image: string;
 }
 
 interface WatchState {
@@ -23,28 +21,24 @@ interface WatchState {
   selectedBand: Band;
   selectedMainCase: { id: string; name: string };
   selectedMainBand: { id: string; name: string };
-  size: { id: string; name: string; price: number };
+  size: { id: number; name: string; price: number };
   totalPrice: number;
-  currentCaseImage: string;
-  currentBandImage: string;
-  currentSideViewImage: string;
 }
 
 const initialCase: Case = {
-  id: "aluminum_black",
+  id: "jetblack",
   name: "Jet Black Aluminum Case",
   price: 359,
-  image: "/images/cases/aluminum_black_10.png",
+ 
 };
 
 const initialBand: Band = {
-  id: "black_solo",
+  id: "black",
   name: "Black Solo Loop",
   price: 49,
-  image: "/images/bands/solo_black_10.jpg",
 };
 
-const initialSize = { id: "46mm", name: "46mm", price: 50 };
+const initialSize = { id: 46, name: "46mm", price: 50 };
 
 const initialState: WatchState = {
   collection: "APPLE_WATCH_SERIES_10",
@@ -57,9 +51,7 @@ const initialState: WatchState = {
   selectedMainBand: { id: "solo_loop", name: "Solo Loop" },
   size: initialSize,
   totalPrice: initialCase.price + initialBand.price + initialSize.price,
-  currentCaseImage: initialCase.image,
-  currentBandImage: initialBand.image,
-  currentSideViewImage: `/images/side/${initialCase.id}_${initialBand.id}_side.jpg`,
+
 };
 
 const watchSlice = createSlice({
@@ -75,10 +67,6 @@ const watchSlice = createSlice({
     ) {
       state.selectedCase = action.payload.subCase;
       state.selectedMainCase = action.payload.mainCase;
-      state.currentCaseImage = action.payload.subCase.image;
-
-      // Dynamically update side view image
-      state.currentSideViewImage = `/images/side/${state.selectedCase.id}_${state.selectedBand.id}_side.jpg`;
 
       // Recalculate total price
       state.totalPrice =
@@ -106,10 +94,6 @@ const watchSlice = createSlice({
 
       state.selectedMainCase = action.payload;
       state.selectedCase = firstCase;
-      state.currentCaseImage = firstCase.image;
-
-      // Dynamically update side view image
-      state.currentSideViewImage = `/images/side/${firstCase.id}_${state.selectedBand.id}_side.jpg`;
 
       // Recalculate total price
       state.totalPrice =
@@ -125,10 +109,6 @@ const watchSlice = createSlice({
     ) {
       state.selectedBand = action.payload.subBand;
       state.selectedMainBand = action.payload.mainBand;
-      state.currentBandImage = action.payload.subBand.image;
-
-      // Dynamically update side view image
-      state.currentSideViewImage = `/images/side/${state.selectedCase.id}_${state.selectedBand.id}_side.jpg`;
 
       // Recalculate total price
       state.totalPrice =
@@ -155,7 +135,6 @@ const watchSlice = createSlice({
 
       state.selectedMainBand = action.payload;
       state.selectedBand = firstBand;
-      state.currentBandImage = firstBand.image;
 
       state.totalPrice =
         state.selectedCase.price + firstBand.price + state.size.price;
@@ -163,7 +142,7 @@ const watchSlice = createSlice({
 
     setSize(
       state,
-      action: PayloadAction<{ id: string; name: string; price: number }>
+      action: PayloadAction<{ id: number; name: string; price: number }>
     ) {
       state.size = action.payload;
       state.totalPrice =
@@ -175,17 +154,13 @@ const watchSlice = createSlice({
 
       const defaults =
         defaultValues[action.payload as keyof typeof defaultValues];
+
       if (defaults) {
         state.selectedCase = defaults.selectedCase;
         state.selectedMainCase = defaults.selectedMainCase;
         state.selectedBand = defaults.selectedBand;
         state.selectedMainBand = defaults.selectedMainBand;
         state.size = defaults.size;
-
-        // Update dependent fields
-        state.currentCaseImage = defaults.selectedCase.image;
-        state.currentBandImage = defaults.selectedBand.image;
-        state.currentSideViewImage = `/images/side/${defaults.selectedCase.id}_${defaults.selectedBand.id}_side.jpg`;
 
         // Recalculate total price
         state.totalPrice =
@@ -196,7 +171,7 @@ const watchSlice = createSlice({
     },
 
     saveSideViewImage: (state) => {
-      const sideViewImage = state.currentSideViewImage;
+      const sideViewImage =  `/images/sideview/side-${state.size.id}-${state.selectedMainCase.id}-${state.selectedCase.id}-${state.selectedMainBand.id}-${state.selectedBand.id}.jpg`;
       console.log("sideViewImage:",sideViewImage)
       const link = document.createElement("a");
 

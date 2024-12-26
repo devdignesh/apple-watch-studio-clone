@@ -13,6 +13,7 @@ import bands from "@/data/bands";
 import { WatchBandIcon } from "@/assets/WatchBandIcon";
 import { WatchCaseIcon } from "@/assets/WatchCaseIcon";
 import { watchCollections } from "@/data/watchCollections";
+import { setIsSideView } from "@/store/slices/uiSlice";
 
 const Footer = () => {
   const dispatch = useDispatch();
@@ -30,6 +31,32 @@ const Footer = () => {
   const filteredCases = cases.find((item) => item.collectionId === collection);
 
   const filteredCBands = bands.find((item) => item.collectionId === collection);
+
+  const handleFooterSizeClick = (option: any) => {
+    dispatch(setSize(option));
+    dispatch(setIsSideView(false));
+  };
+
+  const handleFooterCaseClick = (mainCase: any) => {
+    dispatch(
+      setSelectedMainCase({
+        id: mainCase.id,
+        name: mainCase.name,
+      })
+    );
+    dispatch(setIsSideView(false));
+  };
+
+  const handleFooterBandClick = (mainBand: any) => {
+    dispatch(
+      setSelectedMainBand({
+        id: mainBand.id,
+        name: mainBand.name,
+      })
+    );
+
+    dispatch(setIsSideView(false));
+  };
 
   return (
     <footer className="bottom-[40px] box-border mt-[0px] md:mt-[72px]  py-[24px]  text-center whitespace-nowrap w-full">
@@ -50,9 +77,9 @@ const Footer = () => {
                 ?.sizes.map((option: any) => (
                   <button
                     key={option.id}
-                    onClick={() => dispatch(setSize(option))}
+                    onClick={() => handleFooterSizeClick(option)}
                     className={`my-[5px] min-h-[20px] text-[16px] md:text-[17px]  align-middle text-[#1d1d1f] py-[5px] ${
-                      size.name === option.id
+                      size.id === option.id
                         ? "font-proTextSemibold"
                         : "font-proTextRegular"
                     }`}
@@ -62,7 +89,9 @@ const Footer = () => {
                 ))
             ) : (
               <button
-                onClick={() => dispatch(toggleButton("Size"))}
+                onClick={() =>
+                  dispatch(toggleButton("Size"), dispatch(setIsSideView(false)))
+                }
                 className="my-[5px] min-h-[20px] font-proTextRegular text-[16px] md:text-[17px]  align-middle text-[#1d1d1f] py-[5px]"
               >
                 Size
@@ -79,14 +108,7 @@ const Footer = () => {
             filteredCases?.case.map((mainCase: any) => (
               <button
                 key={mainCase.id}
-                onClick={() =>
-                  dispatch(
-                    setSelectedMainCase({
-                      id: mainCase.id,
-                      name: mainCase.name,
-                    })
-                  )
-                }
+                onClick={() => handleFooterCaseClick(mainCase)}
                 className={`my-[5px] min-h-[20px] text-[16px] md:text-[17px]  align-middle text-[#1d1d1f] py-[5px] ${
                   selectedMainCase.id === mainCase.id
                     ? "font-proTextSemibold"
@@ -98,7 +120,9 @@ const Footer = () => {
             ))
           ) : (
             <button
-              onClick={() => dispatch(toggleButton("Case"))}
+              onClick={() =>
+                dispatch(toggleButton("Case"), dispatch(setIsSideView(false)))
+              }
               className="my-[5px] min-h-[20px]  font-proTextRegular text-[16px] md:text-[17px]   align-middle text-[#1d1d1f]  py-[6px]"
             >
               Case
@@ -114,14 +138,7 @@ const Footer = () => {
             filteredCBands?.band.map((mainBand: any) => (
               <button
                 key={mainBand.id}
-                onClick={() =>
-                  dispatch(
-                    setSelectedMainBand({
-                      id: mainBand.id,
-                      name: mainBand.name,
-                    })
-                  )
-                }
+                onClick={() => handleFooterBandClick(mainBand)}
                 className={`my-[5px] min-h-[20px] px-1 text-[16px] md:text-[17px]  align-middle text-[#1d1d1f] py-[5px] ${
                   selectedMainBand.id === mainBand.id
                     ? "font-proTextSemibold"
@@ -133,7 +150,9 @@ const Footer = () => {
             ))
           ) : (
             <button
-              onClick={() => dispatch(toggleButton("Band"))}
+              onClick={() =>
+                dispatch(toggleButton("Band"), dispatch(setIsSideView(false)))
+              }
               className="my-[5px] min-h-[20px]  font-proTextRegular  text-[16px] md:text-[17px]  align-middle text-[#1d1d1f]  py-[6px]"
             >
               Band

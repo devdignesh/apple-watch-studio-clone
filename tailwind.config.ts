@@ -19,6 +19,20 @@ export default {
         proDisplaySemibold: ["ProDisplaySemibold", "sans-serif"],
 
       },
+      keyframes: {
+        showAnimationKeyFrame: {
+          "0%": { opacity: "0" },
+          "100%": { opacity: "1" },
+        },
+        hideAnimationKeyFrame: {
+          "0%": { opacity: "1" },
+          "100%": { opacity: "0" },
+        },
+      },
+      animation: {
+        spinShowAnimation: "showAnimationKeyFrame .5s ease forwards",
+        spinHideAnimation: "hideAnimationKeyFrame .5s ease forwards",
+      }
     },
   },
   plugins: [],
