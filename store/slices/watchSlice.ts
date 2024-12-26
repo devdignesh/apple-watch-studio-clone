@@ -178,7 +178,7 @@ const watchSlice = createSlice({
       // Set the link's href to the image URL
       link.href = sideViewImage;
 
-      link.download = `${state.selectedCase.id}_${state.selectedBand.id}_side.jpg`;
+      link.download = `apple-watch-${state.selectedCase.id}_${state.selectedBand.id}.jpg`;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
